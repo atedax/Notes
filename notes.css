@@ -3,6 +3,11 @@
     padding: 0;
 }
 
+body {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .navbar {
     display: flex;
     width: 100%;
@@ -25,4 +30,24 @@
     height: 20px;
     background-color: black;
     cursor: pointer;
+}
+
+#note-title {
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+
+#text {
+    border: none;
+    padding: 20px;
+    width: 97vw;
+    height: 85vh;
+    resize: none;
+    outline: none;
+    font-size: 20px;
 }
