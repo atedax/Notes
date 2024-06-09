@@ -11,7 +11,7 @@ body {
 .navbar {
     display: flex;
     width: 100%;
-    height: 45px;
+    height: 40px;
     background-color: black;
     align-items: center;
 }
@@ -20,10 +20,12 @@ body {
     color: white;
     font-weight: 100;
     font-size: 130%;
-    margin-left: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+    box-sizing: border-box;
 }
 
-#menu {
+#menu-btn {
     padding-left: 20px;
     padding-right: 20px;
     width: 20px;
@@ -39,15 +41,69 @@ body {
     height: 50px;
     font-size: 20px;
     border: 1px solid rgba(0, 0, 0, 0.1);
+    border-left: none;
+    border-right: none;
     outline: none;
+    box-sizing: border-box;
 }
 
 #text {
     border: none;
     padding: 20px;
-    width: 97vw;
+    width: 100%;
     height: 85vh;
     resize: none;
     outline: none;
     font-size: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 20rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.create {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 4rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#create-note-btn {
+    width: 200px;
+    height: 35px;
+    background-color: #348efb;
+    border: #348efb;
+    color: white;
+    border-radius: 3px;
+    font-size: 95%;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+
+#create-note-btn:hover {
+    box-shadow: #1212ff 3px -1px 8px;
+    transition: all .3s ease-in-out;
+}
+
+#create-note-btn:active {
+    background-color: rgb(18, 18, 255);
+    border: rgb(18, 18, 255);
+}
+
+
+.notes {
+    width: 100%;
+    height: 100%;
+}
+
+#tools {
+    width: 7rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }

@@ -8,10 +8,20 @@
 </head>
 <body>
     <nav class="navbar">
-        <img id="menu" src="./icon/Menu-Icon.png" alt="меню">
+        <img id="menu-btn" src="./icon/Menu-Icon.png" alt="меню">
         <h1 id="title">БЛОКНОТ</h1>
     </nav>
-    <input id="note-title" placeholder="Название">
-    <textarea id="text" placeholder="Текст"></textarea>
+    <div class="container">
+        <div class="sidebar">
+            <div class="create">
+                <button id="create-note-btn">Создать новую заметку</button>
+            </div>
+        </div>
+        <div class="notes">
+            <input id="note-title" placeholder="Название">
+            <textarea id="text" placeholder="Текст"></textarea>
+        </div>
+        <div id="tools"></div>
+    </div>
 </body>
 </html>
