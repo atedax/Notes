@@ -19,8 +19,6 @@ body {
 
 #menu-btn {
     margin-left: 20px;
-    /*padding-left: 20px;*/
-    /*padding-right: 20px;*/
     width: 20px;
     height: 20px;
     background-color: black;
@@ -31,9 +29,7 @@ body {
     color: white;
     font-weight: lighter;
     font-size: 130%;
-    /*padding-left: 30px;*/
     margin-left: 30px;
-    /*padding-right: 30px;*/
     box-sizing: border-box;
 }
 
@@ -48,7 +44,7 @@ body {
     height: 100%;
     position: fixed;
     max-width: 16rem;
-    border-right: 1px solid rgb(23, 92, 215);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
     border-top: none;
     border-left: none;
     border-bottom: none;
@@ -68,24 +64,22 @@ body {
     transform: translateX(13.4%);
 }
 
-
-
-
 .create {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 4rem;
+    height: 65px;
     border-bottom: 1px solid rgba(35, 114, 251);
 }
 
 #create-note-btn {
+    margin: 15px 0 15px 0;
     width: 200px;
     height: 35px;
     background-color: #348efb;
     border: #348efb;
     color: white;
-    border-radius: 3px;
+    border-radius: 5px;
     font-size: 95%;
     cursor: pointer;
     transition: all .2s ease-in-out;
@@ -99,7 +93,36 @@ body {
 #create-note-btn:active {
     background-color: rgb(18, 18, 255);
     border: rgb(18, 18, 255);
+    transition: all .1s ease-in-out;
+}
+
+.block-clear-all {
+    border-top: 1px solid rgba(35, 114, 251);
+    border-right: none;
+    border-left: none;
+}
+
+#clear-all-btn {
+    margin: 15px 0 15px 15px;
+    width: 200px;
+    height: 35px;
+    background-color: #348efb;
+    border: #348efb;
+    color: white;
+    border-radius: 5px;
+    font-size: 95%;
+    cursor: pointer;
     transition: all .2s ease-in-out;
+}
+
+#clear-all-btn:hover {
+    background-color: #ff0000;
+    transition: all .2s ease-in-out;
+}
+
+#clear-all-btn:active {
+    background-color: rgb(161, 0, 0);
+    transition: all .1s ease-in-out;
 }
 
 ul {
@@ -116,6 +139,11 @@ li {
     box-sizing: border-box;
     cursor: pointer;
     white-space: nowrap;
+}
+
+.save-notes {
+    overflow-y: auto;
+    height: 780px;
 }
 
 li:hover {
