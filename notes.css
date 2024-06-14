@@ -18,8 +18,9 @@ body {
 }
 
 #menu-btn {
-    padding-left: 20px;
-    padding-right: 20px;
+    margin-left: 20px;
+    /*padding-left: 20px;*/
+    /*padding-right: 20px;*/
     width: 20px;
     height: 20px;
     background-color: black;
@@ -30,8 +31,9 @@ body {
     color: white;
     font-weight: lighter;
     font-size: 130%;
-    padding-left: 30px;
-    padding-right: 30px;
+    /*padding-left: 30px;*/
+    margin-left: 30px;
+    /*padding-right: 30px;*/
     box-sizing: border-box;
 }
 
@@ -41,11 +43,33 @@ body {
 }
 
 .sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: fixed;
     max-width: 16rem;
-    border: 1px solid rgb(23, 92, 215);
+    border-right: 1px solid rgb(23, 92, 215);
     border-top: none;
     border-left: none;
+    border-bottom: none;
+    transition: .5s;
+    transform: translateX(-100%);
 }
+
+.sidebar-active {
+    transform: translateX(0);
+}
+
+.content {
+    transition: .5s;
+}
+
+.content-active {
+    transform: translateX(13.4%);
+}
+
+
+
 
 .create {
     display: flex;
@@ -140,8 +164,17 @@ b, p {
     box-sizing: border-box;
 }
 
+.content {
+    display: flex;
+    width: 100%;
+}
+
 #tools {
-    width: 7rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 90px;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -172,4 +205,42 @@ b, p {
     height: 20px;
     width: 20px;
     transition: all .2s;
+}
+
+.tools-icons-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 20%;
+    border: 1px solid rgba(255, 0, 0, 0.0);
+    transition-property: border-radius, borfer;
+    transition-duration: .2s, .2s;
+    transition-timing-function: ease-in-out;
+}
+
+.tools-icons-block:active {
+    border: 1px solid rgb(255, 0, 0);
+    border-radius: 20%;
+    transition: all .2s ease-in-out;
+}
+
+.tools-icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    transition-property: width, height;
+    transition-duration: .2s;
+}
+
+.tools-icon:hover {
+    width: 35px;
+    height: 35px;
+    transition: all .2s;
+}
+
+.active-icon {
+    width: 40px;
+    height: 40px;
 }
