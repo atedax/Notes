@@ -12,23 +12,24 @@
         <h1 id="title">БЛОКНОТ</h1>
     </nav>
     <div class="container">
+        <div class="confirm">
+            <div class="confirm-header">
+                <span>Подтвердить</span>
+            </div>
+            <div class="confirm-body">
+                <p class="confirm-body-text">Вы уверены, что хотите удалить эту заметку?</p>
+            </div>
+            <div class="confirm-footer">
+                <button>Да</button>
+                <button>Нет</button>
+            </div>
+        </div>
         <div class="sidebar">
             <div class="create">
                 <button id="create-note-btn">Создать новую запись</button>
             </div>
             <div class="save-notes">
-                <ul class="notes">
-                    <li>
-                        <b>Lorem ipsum dolor sit amet, consecteturm? Ab, accusamus consequatur culpa cumque facere harum molestias odit veniam.</b>
-                        <p>Loremtior veritatis voluptatum.</p>
-                        <div class="note-footer">
-                            <time class="time" datetime="">20 минут(ы) назад</time>
-                            <div class="note-delete">
-                                <img class="trash-can" src="./icon/trash-can.png" alt="Удалить">
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                <ul class="notes"></ul>
             </div>
             <div class="block-clear-all">
                 <button id="clear-all-btn">Удалить всё</button>

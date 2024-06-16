@@ -38,6 +38,50 @@ body {
     position: relative;
 }
 
+.confirm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    height: 150px;
+    width: 450px;
+    border: 1px solid black;
+    box-sizing: border-box;
+    border-radius: 5px;
+    z-index: 9999;
+}
+
+.confirm-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+span {
+    font-weight: bold;
+    font-size: 25px;
+    color: #373D49;
+}
+
+.confirm-body {
+    display: flex;
+    height: 40px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    padding: 10px;
+}
+
 .sidebar {
     display: flex;
     flex-direction: column;
@@ -69,6 +113,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 65px;
+    width: 256px;
     border-bottom: 1px solid rgba(35, 114, 251);
 }
 
