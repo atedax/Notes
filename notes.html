@@ -12,16 +12,19 @@
         <h1 id="title">БЛОКНОТ</h1>
     </nav>
     <div class="container">
+        <div class="mask"></div>
         <div class="confirm">
             <div class="confirm-header">
                 <span>Подтвердить</span>
             </div>
             <div class="confirm-body">
-                <p class="confirm-body-text">Вы уверены, что хотите удалить эту заметку?</p>
+                <p class="text-in-confirm-body">Вы уверены, что хотите удалить эту заметку?</p>
             </div>
             <div class="confirm-footer">
-                <button>Да</button>
-                <button>Нет</button>
+                <div class="block-confirm-buttons">  <!-- rgb xD -->
+                    <button class="confirm-btns" id="del-yes">Да</button>
+                    <button class="confirm-btns" id="del-no">Нет</button>
+                </div>
             </div>
         </div>
         <div class="sidebar">

@@ -34,6 +34,9 @@ createNoteBtn.addEventListener('click', function() {
     p.textContent = 'Lorem ipsum dolor sit amet, consecteturm? Ab, accusamus consequatur culpa cumqueLorem ipsum dolor sit amet, consecteturm? Ab, accusamus consequatur culpa cumqueLorem ipsum dolor sit amet, consecteturm? Ab, accusamus consequatur culpa cumque'
     time.textContent = '20 минут(ы) назад';
 
+    b.classList.add('text-in-saved-notes');
+    p.classList.add('text-in-saved-notes');
+
     Li.appendChild(b);
     Li.appendChild(p);
     Li.appendChild(divFooter);

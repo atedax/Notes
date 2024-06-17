@@ -38,19 +38,28 @@ body {
     position: relative;
 }
 
+.mask {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: black;
+    opacity: .5;
+    z-index: 999;
+}
+
 .confirm {
+    position: absolute;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    position: absolute;
-    top: 20%;
+    top: 30%;
     left: 40%;
     height: 150px;
     width: 450px;
-    border: 1px solid black;
+    border: none;
     box-sizing: border-box;
-    border-radius: 5px;
-    z-index: 9999;
+    border-radius: 7px;
+    z-index: 1000;
+    background: white;
 }
 
 .confirm-header {
@@ -63,23 +72,66 @@ body {
     border-right: none;
     border-left: none;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 0  15px;
 }
 
 span {
     font-weight: bold;
-    font-size: 25px;
+    font-size: 23px;
     color: #373D49;
 }
 
 .confirm-body {
     display: flex;
-    height: 40px;
+    align-items: center;
+    height: 60px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     border-top: none;
     border-right: none;
     border-left: none;
-    padding: 10px;
+    padding: 10px 15px;
+    box-sizing: border-box;
+}
+
+.text-in-confirm-body {
+    font-size: 18px;
+    font-weight: lighter;
+}
+
+.confirm-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 15px;
+}
+
+.confirm-btns {
+    padding: 0 20px;
+    width: 80px;
+    height: 30px;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: #348efb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin: 0 5px;
+
+}
+
+#del-yes:hover {
+    background-color: red;
+}
+
+#del-no:hover {
+    background-color: green;
+}
+
+#del-yes:active {
+    background-color: #a20000;
+}
+
+#del-no:active {
+    background-color: #006c00;
 }
 
 .sidebar {
@@ -92,7 +144,7 @@ span {
     border-top: none;
     border-left: none;
     border-bottom: none;
-    transition: .5s;
+    transition: .3s;
     transform: translateX(-100%);
 }
 
@@ -101,7 +153,7 @@ span {
 }
 
 .content {
-    transition: .5s;
+    transition: .3s;
 }
 
 .content-active {
@@ -167,7 +219,7 @@ span {
 
 #clear-all-btn:active {
     background-color: rgb(161, 0, 0);
-    transition: all .1s ease-in-out;
+    transition: all .05s ease-in-out;
 }
 
 ul {
@@ -199,7 +251,7 @@ li:hover {
     background-color: rgba(0, 0, 0, 0.04);
 }
 
-b, p {
+.text-in-saved-notes {
     overflow: hidden;
     text-overflow: ellipsis;
 }
