@@ -39,6 +39,7 @@ body {
 }
 
 .mask {
+    display: none;
     position: fixed;
     height: 100%;
     width: 100%;
@@ -48,8 +49,8 @@ body {
 }
 
 .confirm {
+    display: none;
     position: absolute;
-    display: flex;
     flex-direction: column;
     top: 30%;
     left: 40%;
@@ -157,7 +158,7 @@ span {
 }
 
 .content-active {
-    transform: translateX(13.4%);
+    transform: translateX(257px);
 }
 
 .create {
