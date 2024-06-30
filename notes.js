@@ -2,11 +2,15 @@ const menuBtn = document.getElementById('menu-btn');
 const createNoteBtn = document.getElementById('create-note-btn');
 
 menuBtn.addEventListener('click', function () {
-
+    const tools = document.querySelector('.tools');
     const sidebar = document.querySelector('.sidebar');
     const content = document.querySelector('.content');
+    const currentNote = document.querySelector('.current-note');
+
+    tools.classList.toggle('tools-active');
     sidebar.classList.toggle('sidebar-active');
     content.classList.toggle('content-active');
+    currentNote.classList.toggle('current-note-active');
 })
 
 createNoteBtn.addEventListener('click', function() {
@@ -18,7 +22,7 @@ createNoteBtn.addEventListener('click', function() {
     const time = document.createElement('time');
     const divDelete = document.createElement('div');
     const imgDelete = document.createElement('img');
-    let id = checkUniqueId();
+    let id = getRandomId();
 
     divFooter.classList.add('note-footer');
 
@@ -51,28 +55,5 @@ createNoteBtn.addEventListener('click', function() {
 })
 
 function getRandomId() {
-    return Math.round(Math.random() * 1e10);
+    return new Date().getTime();
 }
-
-function checkUniqueId() {
-    const li = document.getElementsByTagName('li');
-
-    let newId;
-    let uniqueId = true;
-
-    do {
-        newId = String( getRandomId() );
-
-        for (let i = 0; i < li.length; ++i) {
-            if (newId === li[i].id) {
-                uniqueId = false;
-
-                break;
-            }
-        }
-    } while (uniqueId !== true)
-
-    return newId;
-}
-
-

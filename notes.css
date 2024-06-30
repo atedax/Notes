@@ -210,12 +210,12 @@ span {
     border-radius: 5px;
     font-size: 95%;
     cursor: pointer;
-    transition: all .2s ease-in-out;
+    transition: all .1s ease-in-out;
 }
 
 #clear-all-btn:hover {
     background-color: #ff0000;
-    transition: all .2s ease-in-out;
+    transition: all .1s ease-in-out;
 }
 
 #clear-all-btn:active {
@@ -258,8 +258,15 @@ li:hover {
 }
 
 .current-note {
-    width: 100%;
+    width: calc(100% - 92px);
     height: 100%;
+    transition-property: width;
+    transition-duration: .3s;
+}
+
+.current-note-active {
+    height: 100%;
+    width: calc(100% - 256px - 92px);
 }
 
 #note-title {
@@ -295,13 +302,24 @@ li:hover {
     width: 100%;
 }
 
-#tools {
+.tools {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transform: translateX(0);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
     width: 90px;
     border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: .3s;
+    z-index: 5;
+}
+
+.tools-active {
+    transform: translateX(-257px);
 }
 
 .note-footer {
@@ -348,7 +366,7 @@ li:hover {
 .tools-icons-block:active {
     border: 1px solid rgb(255, 0, 0);
     border-radius: 20%;
-    transition: all .2s ease-in-out;
+    transition: all .1s ease-in-out;
 }
 
 .tools-icon {
