@@ -1,5 +1,16 @@
 const menuBtn = document.getElementById('menu-btn');
 const createNoteBtn = document.getElementById('create-note-btn');
+const toolsIconsBlock = document.querySelectorAll('.tools-icons-block');
+
+toolsIconsBlock.forEach(function (el, ind) {
+    el.addEventListener('click', function () {
+        const mainText = document.querySelector('.main-text');
+
+        el.classList.toggle('tools-icons-block-active');
+
+        switchesClasses(mainText, ind);
+    })
+})
 
 menuBtn.addEventListener('click', function () {
     const tools = document.querySelector('.tools');
@@ -56,4 +67,14 @@ createNoteBtn.addEventListener('click', function() {
 
 function getRandomId() {
     return new Date().getTime();
+}
+
+function switchesClasses(mainText, ind) {
+    if (toolsIconsBlock[ind].id === 'bold-block') {
+        mainText.classList.toggle('bold');
+    } else if (toolsIconsBlock[ind].id === 'italic-block') {
+        mainText.classList.toggle('italic');
+    } else if (toolsIconsBlock[ind].id === 'underline-text') {
+        mainText.classList.toggle('underline');
+    }
 }
