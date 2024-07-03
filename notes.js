@@ -1,15 +1,14 @@
 const menuBtn = document.getElementById('menu-btn');
 const createNoteBtn = document.getElementById('create-note-btn');
-const toolsIconsBlock = document.querySelectorAll('.tools-icons-block');
+const tools = document.querySelector('.tools');
+const notes = document.querySelector('.notes');
 
-toolsIconsBlock.forEach(function (el, ind) {
-    el.addEventListener('click', function () {
-        const mainText = document.querySelector('.main-text');
+tools.addEventListener('click', function(event) {
+    const mainText = document.querySelector('.main-text');
 
-        el.classList.toggle('tools-icons-block-active');
-
-        switchesClasses(mainText, ind);
-    })
+    if (event.target.className === 'tools-icon') {
+        toolsFunctional(mainText, event);
+    }
 })
 
 menuBtn.addEventListener('click', function () {
@@ -33,6 +32,7 @@ createNoteBtn.addEventListener('click', function() {
     const time = document.createElement('time');
     const divDelete = document.createElement('div');
     const imgDelete = document.createElement('img');
+
     let id = getRandomId();
 
     divFooter.classList.add('note-footer');
@@ -69,12 +69,26 @@ function getRandomId() {
     return new Date().getTime();
 }
 
-function switchesClasses(mainText, ind) {
-    if (toolsIconsBlock[ind].id === 'bold-block') {
+function toolsFunctional(mainText, event) {
+    if (event.target.id === 'bold-block') {
         mainText.classList.toggle('bold');
-    } else if (toolsIconsBlock[ind].id === 'italic-block') {
+    } else if (event.target.id === 'italic-block') {
         mainText.classList.toggle('italic');
-    } else if (toolsIconsBlock[ind].id === 'underline-text') {
+    } else if (event.target.id === 'underline-text') {
         mainText.classList.toggle('underline');
+    } else if (event.target.id === 'overline-text') {
+        mainText.classList.toggle('overline');
+    } else {
+        mainText.classList.toggle('line-through');
     }
 }
+
+notes.addEventListener('click', function(event) {
+    if (event.target.className === 'trash-can') {
+        const mask = document.querySelector('.mask');
+        const confirm = document.querySelector('.confirm');
+
+        mask.style.display = 'flex';
+        confirm.style.display = 'flex';
+    }
+})
