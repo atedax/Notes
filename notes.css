@@ -227,7 +227,7 @@ ul {
     list-style-type: none;
 }
 
-li {
+.notes {
     display: flex;
     flex-direction: column;
     justify-content: space-between;

@@ -1,7 +1,35 @@
 const menuBtn = document.getElementById('menu-btn');
 const createNoteBtn = document.getElementById('create-note-btn');
 const tools = document.querySelector('.tools');
-const notes = document.querySelector('.notes');
+const saveNotes = document.querySelector('.save-notes');
+const blockConfirmBtns = document.querySelector('.block-confirm-buttons');
+const mask = document.querySelector('.mask');
+const confirm = document.querySelector('.confirm');
+
+let idCurrentSavedNote; // тут будет храниться id заметки, готовое к уадлению.
+
+function getRandomId() {
+    return new Date().getTime();
+}
+
+function toolsFunctional(txtElement, event) {
+    if (event.target.id === 'bold-block') {
+        txtElement.classList.toggle('bold');
+    } else if (event.target.id === 'italic-block') {
+        txtElement.classList.toggle('italic');
+    } else if (event.target.id === 'underline-text') {
+        txtElement.classList.toggle('underline');
+    } else if (event.target.id === 'overline-text') {
+        txtElement.classList.toggle('overline');
+    } else {
+        txtElement.classList.toggle('line-through');
+    }
+}
+
+function togglesDisplayStatus(status) {
+    mask.style.display = status;
+    confirm.style.display = status;
+} // только для элементов с классом 'mask' и 'confirm'
 
 tools.addEventListener('click', function(event) {
     const mainText = document.querySelector('.main-text');
@@ -11,7 +39,7 @@ tools.addEventListener('click', function(event) {
     }
 })
 
-menuBtn.addEventListener('click', function () {
+menuBtn.addEventListener('click', function() {
     const tools = document.querySelector('.tools');
     const sidebar = document.querySelector('.sidebar');
     const content = document.querySelector('.content');
@@ -24,7 +52,7 @@ menuBtn.addEventListener('click', function () {
 })
 
 createNoteBtn.addEventListener('click', function() {
-    const Li = document.createElement('li');
+    const li = document.createElement('li');
     const ul = document.querySelector('ul');
     const b = document.createElement('b');
     const p = document.createElement('p');
@@ -52,43 +80,38 @@ createNoteBtn.addEventListener('click', function() {
     b.classList.add('text-in-saved-notes');
     p.classList.add('text-in-saved-notes');
 
-    Li.appendChild(b);
-    Li.appendChild(p);
-    Li.appendChild(divFooter);
-    Li.id = 'note-' + id;
+    li.appendChild(b);
+    li.appendChild(p);
+    li.appendChild(divFooter);
+    li.id = 'note-' + id;
+    li.classList.add('notes');
 
     divDelete.appendChild(imgDelete);
 
     divFooter.appendChild(time);
     divFooter.appendChild(divDelete);
 
-    ul.appendChild(Li);
+    ul.appendChild(li);
 })
 
-function getRandomId() {
-    return new Date().getTime();
-}
-
-function toolsFunctional(mainText, event) {
-    if (event.target.id === 'bold-block') {
-        mainText.classList.toggle('bold');
-    } else if (event.target.id === 'italic-block') {
-        mainText.classList.toggle('italic');
-    } else if (event.target.id === 'underline-text') {
-        mainText.classList.toggle('underline');
-    } else if (event.target.id === 'overline-text') {
-        mainText.classList.toggle('overline');
-    } else {
-        mainText.classList.toggle('line-through');
-    }
-}
-
-notes.addEventListener('click', function(event) {
+saveNotes.addEventListener('click', function(event) {
     if (event.target.className === 'trash-can') {
-        const mask = document.querySelector('.mask');
-        const confirm = document.querySelector('.confirm');
 
-        mask.style.display = 'flex';
-        confirm.style.display = 'flex';
+        togglesDisplayStatus('flex');
+
+        idCurrentSavedNote = event.target.closest('li').id;
+    }
+})
+
+blockConfirmBtns.addEventListener('click', function(event) {
+    if (event.target.id === 'del-no') {
+        togglesDisplayStatus('none');
+
+    }
+
+    if (event.target.id === 'del-yes') {
+        document.getElementById(idCurrentSavedNote).remove();
+
+        togglesDisplayStatus('none');
     }
 })
