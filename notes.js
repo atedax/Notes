@@ -96,7 +96,6 @@ createNoteBtn.addEventListener('click', function() {
 
 saveNotes.addEventListener('click', function(event) {
     if (event.target.className === 'trash-can') {
-
         togglesDisplayStatus('flex');
 
         idCurrentSavedNote = event.target.closest('li').id;
@@ -106,7 +105,6 @@ saveNotes.addEventListener('click', function(event) {
 blockConfirmBtns.addEventListener('click', function(event) {
     if (event.target.id === 'del-no') {
         togglesDisplayStatus('none');
-
     }
 
     if (event.target.id === 'del-yes') {
