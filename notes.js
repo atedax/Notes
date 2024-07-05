@@ -5,8 +5,10 @@ const saveNotes = document.querySelector('.save-notes');
 const blockConfirmBtns = document.querySelector('.block-confirm-buttons');
 const mask = document.querySelector('.mask');
 const confirm = document.querySelector('.confirm');
+const clearAllBtn = document.getElementById('clear-all-btn');
 
 let idCurrentSavedNote; // тут будет храниться id заметки, готовое к уадлению.
+
 
 function getRandomId() {
     return new Date().getTime();
@@ -31,6 +33,11 @@ function togglesDisplayStatus(status) {
     confirm.style.display = status;
 } // только для элементов с классом 'mask' и 'confirm'
 
+function textConfirmation(text) {
+    return document.querySelector('.text-in-confirm-body').textContent = text;
+}
+
+
 tools.addEventListener('click', function(event) {
     const mainText = document.querySelector('.main-text');
 
@@ -52,8 +59,14 @@ menuBtn.addEventListener('click', function() {
 })
 
 createNoteBtn.addEventListener('click', function() {
-    const li = document.createElement('li');
+    if ( !saveNotes.firstChild ) {
+        const createUl = document.createElement('ul');
+
+        saveNotes.appendChild(createUl);
+    }
+
     const ul = document.querySelector('ul');
+    const li = document.createElement('li');
     const b = document.createElement('b');
     const p = document.createElement('p');
     const divFooter = document.createElement('div');
@@ -96,6 +109,10 @@ createNoteBtn.addEventListener('click', function() {
 
 saveNotes.addEventListener('click', function(event) {
     if (event.target.className === 'trash-can') {
+        textConfirmation('Вы уверены, что хотите удалить эту заметку?');
+
+        blockConfirmBtns.id = 'from-trash-can';
+
         togglesDisplayStatus('flex');
 
         idCurrentSavedNote = event.target.closest('li').id;
@@ -103,13 +120,23 @@ saveNotes.addEventListener('click', function(event) {
 })
 
 blockConfirmBtns.addEventListener('click', function(event) {
-    if (event.target.id === 'del-no') {
-        togglesDisplayStatus('none');
-    }
-
     if (event.target.id === 'del-yes') {
-        document.getElementById(idCurrentSavedNote).remove();
+        if (blockConfirmBtns.id === 'from-trash-can') {
+            document.getElementById(idCurrentSavedNote).remove();
+        }
 
-        togglesDisplayStatus('none');
+        if (blockConfirmBtns.id === 'from-clear-all-btn') {
+            document.querySelector('ul').remove();
+        }
     }
+
+    togglesDisplayStatus('none');
+})
+
+clearAllBtn.addEventListener('click', function() {
+    textConfirmation('Вы уверены, что хотите навсегда удалить все сохраненные заметки?');
+
+    blockConfirmBtns.id = 'from-clear-all-btn';
+
+    togglesDisplayStatus('flex');
 })
