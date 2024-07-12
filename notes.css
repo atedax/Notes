@@ -282,11 +282,11 @@ li:hover {
     box-sizing: border-box;
 }
 
-.wrapper-text {
+.wrapper-note-text {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-#text {
+#note-text {
     border: none;
     padding: 20px;
     width: 100%;

@@ -6,9 +6,10 @@ const blockConfirmBtns = document.querySelector('.block-confirm-buttons');
 const mask = document.querySelector('.mask');
 const confirm = document.querySelector('.confirm');
 const clearAllBtn = document.getElementById('clear-all-btn');
+const db = [];
 
 let idCurrentSavedNote; // тут будет храниться id заметки, готовое к уадлению.
-
+let index = 0;
 
 function getRandomId() {
     return new Date().getTime();
@@ -86,8 +87,9 @@ createNoteBtn.addEventListener('click', function() {
     imgDelete.src = './icon/trash-can.png';
     imgDelete.alt = 'Удалить';
 
-    b.textContent = 'Lorem ipsum dolor sit amet, consecteturm? Ab, accusamus consequatur culpa cumque';
-    p.textContent = 'Lorem ipsum dolor sit amet, consecteturm? Ab, accusamus consequatur culpa cumqueLorem ipsum dolor sit amet, consecteturm? Ab, accusamus consequatur culpa cumqueLorem ipsum dolor sit amet, consecteturm? Ab, accusamus consequatur culpa cumque'
+    autocompleteSavedNotes('note-title', b);
+    autocompleteSavedNotes('note-text', p);
+
     time.textContent = '20 минут(ы) назад';
 
     b.classList.add('text-in-saved-notes');
@@ -98,6 +100,7 @@ createNoteBtn.addEventListener('click', function() {
     li.appendChild(divFooter);
     li.id = 'note-' + id;
     li.classList.add('notes');
+    li.dataset.value = index++;
 
     divDelete.appendChild(imgDelete);
 
@@ -105,7 +108,14 @@ createNoteBtn.addEventListener('click', function() {
     divFooter.appendChild(divDelete);
 
     ul.appendChild(li);
-})
+
+
+    db.push({
+       id: id,
+       title: b.textContent,
+       text: p.textContent,
+    });
+}) // использовать функцию создания заметки
 
 saveNotes.addEventListener('click', function(event) {
     if (event.target.className === 'trash-can') {
@@ -116,6 +126,10 @@ saveNotes.addEventListener('click', function(event) {
         togglesDisplayStatus('flex');
 
         idCurrentSavedNote = event.target.closest('li').id;
+    }
+
+    if ( event.target.closest('li') ) {
+        console.log( event.target.closest('li').getAttribute('data-value') );
     }
 })
 
@@ -140,3 +154,80 @@ clearAllBtn.addEventListener('click', function() {
 
     togglesDisplayStatus('flex');
 })
+
+
+function autocompleteSavedNotes(elementById, tag) {
+    let element = document.getElementById(elementById).value;
+
+    if (element === '') {
+        tag.textContent = 'Без названия';
+    } else {
+        tag.textContent = element;
+    }
+}
+
+function autoCreateSaveNote() {
+    if ( (document.getElementById('note-title').value !== '' ||
+        document.getElementById('note-text').value !== '') && saveNotes.firstChild === null ) {
+        if ( !saveNotes.firstChild ) {
+            const createUl = document.createElement('ul');
+
+            saveNotes.appendChild(createUl);
+        }
+
+        const ul = document.querySelector('ul');
+        const li = document.createElement('li');
+        const b = document.createElement('b');
+        const p = document.createElement('p');
+        const divFooter = document.createElement('div');
+        const time = document.createElement('time');
+        const divDelete = document.createElement('div');
+        const imgDelete = document.createElement('img');
+
+        let id = getRandomId();
+
+        divFooter.classList.add('note-footer');
+
+        divDelete.classList.add('note-delete');
+
+        time.classList.add('time');
+
+        imgDelete.classList.add('trash-can');
+        imgDelete.src = './icon/trash-can.png';
+        imgDelete.alt = 'Удалить';
+
+        autocompleteSavedNotes('note-title', b);
+        autocompleteSavedNotes('note-text', p);
+
+        time.textContent = '20 минут(ы) назад';
+
+        b.classList.add('text-in-saved-notes');
+        p.classList.add('text-in-saved-notes');
+
+        li.appendChild(b);
+        li.appendChild(p);
+        li.appendChild(divFooter);
+        li.id = 'note-' + id;
+        li.classList.add('notes');
+        li.dataset.value = index++;
+
+        divDelete.appendChild(imgDelete);
+
+        divFooter.appendChild(time);
+        divFooter.appendChild(divDelete);
+
+        ul.appendChild(li);
+
+
+        db.push({
+            id: id,
+            title: b.textContent,
+            text: p.textContent,
+        });
+    } // написать функцию создания заметки.
+} // переделать условие
+
+
+setInterval(autoCreateSaveNote, 500);
+
+
