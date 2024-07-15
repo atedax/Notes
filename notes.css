@@ -239,7 +239,7 @@ ul {
     white-space: nowrap;
 }
 
-.save-notes {
+.saved-notes {
     overflow-y: auto;
     height: 780px;
 }
