@@ -126,18 +126,33 @@ function createNewNote() {
     addNoteInDb(id, b, p);
 } //
 
-function removeNoteFromDb() {
+function removeNoteFromDb(blockConfirmBtnsId) {
+    if (blockConfirmBtnsId === 'from-trash-can') {
+        dbOfSavedNote.splice(dataValue, 1); // из массива dataBase удаляем элемент под индексом dataValue.
+    }
 
-} // (доделать)
+    if (blockConfirmBtnsId === 'from-clear-all-btn') {
+        dbOfSavedNote = []; // очищаем массив dataBase.
+    }
+}
 
-setInterval(autoCreateSaveNote, 100);
+function reWriteDataValue() {
+    for (let i = dataValue; i < document.getElementsByTagName('li').length; i++) {
+        document.getElementsByTagName('li')[i].dataset.value = i;
+    }
+}
+
+setInterval(autoCreateSaveNote, 1200); // переделать или убрать
 
 
 tools.addEventListener('click', function(event) {
     const mainText = document.querySelector('.main-text');
 
-    if (event.target.className === 'tools-icon') {
-        toolsFunctional(mainText, event);
+    if (event.target.className === 'tools-icon') { // Если нажали на иконку -->
+        toolsFunctional(mainText, event); // --> В поле с основным текстом (textArea), меняем стиль текста.
+
+        event.target.closest('.tools-icons-blocks').classList.toggle('tools-icons-blocks-active'); // -->
+        // Элементу с классом '.tools-icons-blocks' переключаем класс 'tools-icons-blocks-active'. (Появляется обводка иконки)
     }
 })
 
@@ -175,7 +190,11 @@ blockConfirmBtns.addEventListener('click', function(event) {
         if (blockConfirmBtns.id === 'from-trash-can') { // Если id элемента подтверждения === 'from-trash-can' -->
             document.getElementById(idCurrentSavedNote).remove(); // --> удаляем элемент по id.
 
-            dbOfSavedNote.splice(dataValue, 1); // из массива dataBase удаляем элемент под индексом dataValue.
+            reWriteDataValue(); // Перезаписываем значение атрибута data-value для всех эллементов, начиная со следующего элемента.
+
+            index--; // После удаления заметки, index (значение атрибута data-value) уменьшаем.
+
+            removeNoteFromDb('from-trash-can'); // Удаляем заметку из database.
 
             idCurrentSavedNote = undefined; // очищаем переменную.
         }
@@ -183,7 +202,9 @@ blockConfirmBtns.addEventListener('click', function(event) {
         if (blockConfirmBtns.id === 'from-clear-all-btn') { // Если id элемента подтверждения === 'from-clear-all-btn' -->
             document.querySelector('ul').remove(); // --> удаляем весь тег ul. (соответсвенно все сохранённые заметки удаляются).
 
-            dbOfSavedNote = []; // очищаем массив dataBase.
+            removeNoteFromDb('from-clear-all-btn');
+
+            index = 0; // После удаления всех заметок, index (значение атрибута data-vale) обнуляем.
         }
 
         togglesDisplayStatus('none'); // убираем модальное окно удаления.
