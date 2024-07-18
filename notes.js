@@ -6,11 +6,14 @@ const blockConfirmBtns = document.querySelector('.block-confirm-buttons');
 const mask = document.querySelector('.mask');
 const confirm = document.querySelector('.confirm');
 const clearAllBtn = document.getElementById('clear-all-btn');
+const noteTitle = document.getElementById('note-title');
+const noteText = document.getElementById('note-text');
 
 let dbOfSavedNote = []; // тут будет храниться массив объектов.
 let idCurrentSavedNote; // тут будет храниться id заметки, готовое к уадлению.
 let index = 0; // при создании новой заметки - индекс будет увеличиваться. index - это data-value li элемента.
 let dataValue; // тут будет храниться значение элемента li.
+let previousDv; // старое значение dataValue. Нужна для нахождения элемента по dV.
 
 function getRandomId() {
     return new Date().getTime();
@@ -45,20 +48,11 @@ function autocompleteTextInSavedNotes(elementById, tag) {
     if (element === '') { // Если значение элемента (input или textArea) пустое -->
         tag.textContent = 'Без названия'; // --> tag(b, p) в сохранённых заметках (savedNotes) вставляем текст заглушку.
     } else {
-        tag.textContent = element; // --> значение элемента (input или textArea)
+        if (tag.textContent !== elementById.value) {
+            tag.textContent = element; // --> значение элемента (input или textArea)
+        }
     }
 } // Автоматически вставляет текст в сохранённых заметках. (savedNotes).
-
-function autoCreateSaveNote() {
-    const noteTitle = document.getElementById('note-title');
-    const noteText = document.getElementById('note-text');
-
-    if ( (noteTitle.value !== '' || noteText.value !== '') && savedNotes.firstChild === null ) {
-        createNewNote();
-    }
-} // Автоматически создаём заметку,
-    // если в savedNote нет дочернего элемента (не нажали кнопку 'Создать новую заметку'),
-    // а пользователь начал набирать текст.
 
 function addNoteInDb(id, b, p) {
     dbOfSavedNote.push({
@@ -101,8 +95,10 @@ function createNewNote() {
     imgDelete.src = './icon/trash-can.png';
     imgDelete.alt = 'Удалить';
 
-    autocompleteTextInSavedNotes('note-title', b); // автозаполнение тега 'b'.
-    autocompleteTextInSavedNotes('note-text', p); // автозаполнение тега 'p'.
+    // setInterval(() => {
+    //     autocompleteTextInSavedNotes('note-title', b); // автозаполнение тега 'b'.
+    //     autocompleteTextInSavedNotes('note-text', p); // автозаполнение тега 'p'.
+    // }, 20); // переделать
 
     time.textContent = '20 минут(ы) назад'; // (для себя) сделать время (сколько прошло с момента создания заметки).
 
@@ -142,7 +138,28 @@ function reWriteDataValue() {
     }
 }
 
-setInterval(autoCreateSaveNote, 1200); // переделать или убрать
+function switchingClasses(className) {
+    const lists = document.querySelectorAll('li');
+
+    if (previousDv !== undefined) {
+        lists[previousDv].classList.remove(className);
+    }
+
+    lists[dataValue].classList.add(className);
+
+    previousDv = dataValue;
+}
+
+function autoCreateSaveNote() {
+    if ( (noteTitle.value !== '' || noteText.value !== '') && savedNotes.firstChild === null ) {
+        createNewNote();
+    }
+} // Автоматически создаём заметку,
+// если в savedNote нет дочернего элемента (не нажали кнопку 'Создать новую заметку'),
+// а пользователь начал набирать текст.
+
+
+setInterval(autoCreateSaveNote, 1200); // переделать или убрать!!!!!!
 
 
 tools.addEventListener('click', function(event) {
@@ -173,6 +190,14 @@ createNoteBtn.addEventListener('click', function() {
 })
 
 savedNotes.addEventListener('click', function(event) {
+    if ( event.target.closest('.notes') ) {
+        dataValue = event.target.closest('li').dataset.value; // сохраняем значение аттрибута dataValue.
+
+        switchingClasses('active-list'); // Выделяем серым цветом активную заметку.
+
+        fillingOfFields();
+    }
+
     if (event.target.className === 'trash-can') { // Если нажали на 'мусорное ведро' -->
         textConfirmation('Вы уверены, что хотите удалить эту заметку?'); // --> Указываем текст подтверждения.
 
@@ -181,7 +206,6 @@ savedNotes.addEventListener('click', function(event) {
         togglesDisplayStatus('flex'); // --> показываем модальное окно удаления.
 
         idCurrentSavedNote = event.target.closest('li').id; // сохраняем id удаляемого элемента.
-        dataValue = event.target.closest('li').dataset.value; // сохраняем dataValue удаляемого элемента.
     }
 })
 
@@ -226,3 +250,8 @@ clearAllBtn.addEventListener('click', function() {
 })
 
 
+function fillingOfFields() {
+    noteTitle.value = dbOfSavedNote[dataValue].title;
+
+    noteText.value = dbOfSavedNote[dataValue].text;
+}

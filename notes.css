@@ -241,15 +241,15 @@ ul {
 
 .saved-notes {
     overflow-y: auto;
-    height: 780px;
+    height: 48.75rem;
 }
 
-li:hover {
-    background-color: rgba(0, 0, 0, 0.04);
-}
+/*li:hover {*/
+/*    background-color: rgba(0, 0, 0, 0.04);*/
+/*}*/
 
 .active-list {
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .text-in-saved-notes {
