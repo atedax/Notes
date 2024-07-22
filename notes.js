@@ -8,12 +8,16 @@ const confirm = document.querySelector('.confirm');
 const clearAllBtn = document.getElementById('clear-all-btn');
 const noteTitle = document.getElementById('note-title');
 const noteText = document.getElementById('note-text');
+const currentNote = document.querySelector('.current-note');
+
 
 let dbOfSavedNote = []; // тут будет храниться массив объектов.
 let idCurrentSavedNote; // тут будет храниться id заметки, готовое к уадлению.
 let index = 0; // при создании новой заметки - индекс будет увеличиваться. index - это data-value li элемента.
 let dataValue; // тут будет храниться значение элемента li.
 let previousDv; // старое значение dataValue. Нужна для нахождения элемента по dV.
+let activeList = document.querySelector('.active-list');
+
 
 function getRandomId() {
     return new Date().getTime();
@@ -41,18 +45,6 @@ function togglesDisplayStatus(status) {
 function textConfirmation(text) {
     document.querySelector('.text-in-confirm-body').textContent = text;
 } // текст в модальном окне удаления.
-
-function autocompleteTextInSavedNotes(elementById, tag) {
-    let element = document.getElementById(elementById).value;
-
-    if (element === '') { // Если значение элемента (input или textArea) пустое -->
-        tag.textContent = 'Без названия'; // --> tag(b, p) в сохранённых заметках (savedNotes) вставляем текст заглушку.
-    } else {
-        if (tag.textContent !== elementById.value) {
-            tag.textContent = element; // --> значение элемента (input или textArea)
-        }
-    }
-} // Автоматически вставляет текст в сохранённых заметках. (savedNotes).
 
 function addNoteInDb(id, b, p) {
     dbOfSavedNote.push({
@@ -95,22 +87,20 @@ function createNewNote() {
     imgDelete.src = './icon/trash-can.png';
     imgDelete.alt = 'Удалить';
 
-    // setInterval(() => {
-    //     autocompleteTextInSavedNotes('note-title', b); // автозаполнение тега 'b'.
-    //     autocompleteTextInSavedNotes('note-text', p); // автозаполнение тега 'p'.
-    // }, 20); // переделать
+    b.textContent = 'Без названия';
+    b.classList.add('text-in-saved-notes');
+
+    p.textContent = 'Пустой';
+    p.classList.add('text-in-saved-notes');
 
     time.textContent = '20 минут(ы) назад'; // (для себя) сделать время (сколько прошло с момента создания заметки).
-
-    b.classList.add('text-in-saved-notes');
-    p.classList.add('text-in-saved-notes');
 
     li.appendChild(b);
     li.appendChild(p);
     li.appendChild(divFooter);
     li.id = 'note-' + id;
     li.classList.add('notes');
-    li.dataset.value = `${index++}`; // присваиваем в атрибут data-value значение index.
+    li.dataset.value = `${index}`; // присваиваем в атрибут data-value значение index.
 
     divDelete.appendChild(imgDelete);
 
@@ -120,7 +110,7 @@ function createNewNote() {
     ul.appendChild(li);
 
     addNoteInDb(id, b, p);
-} //
+}
 
 function removeNoteFromDb(blockConfirmBtnsId) {
     if (blockConfirmBtnsId === 'from-trash-can') {
@@ -138,28 +128,48 @@ function reWriteDataValue() {
     }
 }
 
+function switchingClassesForCreateNewNote(className) {
+    const lists = document.querySelectorAll('li');
+
+    if (previousDv !== undefined && lists[previousDv] !== undefined) {
+        lists[previousDv].classList.remove(className);
+    }
+
+    lists[index].classList.add(className);
+
+
+    previousDv = index;
+
+    dataValue = index;
+
+    index++;
+}  // !!!!!!!!!
+
 function switchingClasses(className) {
     const lists = document.querySelectorAll('li');
 
-    if (previousDv !== undefined) {
+    if (previousDv !== undefined && lists[previousDv] !== undefined) {
         lists[previousDv].classList.remove(className);
     }
 
     lists[dataValue].classList.add(className);
 
     previousDv = dataValue;
-}
+} // !!!!!!!!
 
-function autoCreateSaveNote() {
-    if ( (noteTitle.value !== '' || noteText.value !== '') && savedNotes.firstChild === null ) {
-        createNewNote();
+function fillingOfFieldsCurrentNote() {
+    if (dbOfSavedNote[dataValue].title === 'Без названия') {
+        noteTitle.value = '';
+    } else {
+        noteTitle.value = dbOfSavedNote[dataValue].title;
     }
-} // Автоматически создаём заметку,
-// если в savedNote нет дочернего элемента (не нажали кнопку 'Создать новую заметку'),
-// а пользователь начал набирать текст.
 
-
-setInterval(autoCreateSaveNote, 1200); // переделать или убрать!!!!!!
+    if (dbOfSavedNote[dataValue].text === 'Пустой') {
+        noteText.value = '';
+    } else {
+        noteText.value = dbOfSavedNote[dataValue].text;
+    }
+}
 
 
 tools.addEventListener('click', function(event) {
@@ -177,7 +187,6 @@ menuBtn.addEventListener('click', function() {
     const tools = document.querySelector('.tools');
     const sidebar = document.querySelector('.sidebar');
     const content = document.querySelector('.content');
-    const currentNote = document.querySelector('.current-note');
 
     tools.classList.toggle('tools-active');
     sidebar.classList.toggle('sidebar-active');
@@ -187,6 +196,11 @@ menuBtn.addEventListener('click', function() {
 
 createNoteBtn.addEventListener('click', function() {
     createNewNote();
+
+    noteTitle.value = '';
+    noteText.value = '';
+
+    switchingClassesForCreateNewNote('active-list');
 })
 
 savedNotes.addEventListener('click', function(event) {
@@ -195,7 +209,7 @@ savedNotes.addEventListener('click', function(event) {
 
         switchingClasses('active-list'); // Выделяем серым цветом активную заметку.
 
-        fillingOfFields();
+        fillingOfFieldsCurrentNote();
     }
 
     if (event.target.className === 'trash-can') { // Если нажали на 'мусорное ведро' -->
@@ -249,9 +263,29 @@ clearAllBtn.addEventListener('click', function() {
     togglesDisplayStatus('flex'); // --> показываем модальное окно удаления.
 })
 
+currentNote.addEventListener('input', function (event) {
+    if (!savedNotes.firstChild) {
+        createNewNote();
 
-function fillingOfFields() {
-    noteTitle.value = dbOfSavedNote[dataValue].title;
+        noteTitle.value = '';
+        noteText.value = '';
 
-    noteText.value = dbOfSavedNote[dataValue].text;
-}
+        switchingClassesForCreateNewNote('active-list');
+    } // переделать
+
+    if (noteTitle.value !== '') {
+        dbOfSavedNote[dataValue].title = noteTitle.value;
+        document.querySelectorAll('li')[dataValue].querySelector('b').textContent = noteTitle.value; // переделать
+    } else {
+        dbOfSavedNote[dataValue].title = 'Без названия';
+        document.querySelectorAll('li')[dataValue].querySelector('b').textContent = 'Без названия'; // переделать
+    }
+
+    if (noteText.value !== '') {
+        dbOfSavedNote[dataValue].text = noteText.value;
+        document.querySelectorAll('li')[dataValue].querySelector('p').textContent = noteText.value; // переделать
+    } else {
+        dbOfSavedNote[dataValue].text = 'Пустой';
+        document.querySelectorAll('li')[dataValue].querySelector('p').textContent = 'Пустой'; // переделать
+    }
+})
