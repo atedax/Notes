@@ -1,3 +1,5 @@
+'use strict';
+
 const menuBtn = document.getElementById('menu-btn');
 const createNoteBtn = document.getElementById('create-note-btn');
 const tools = document.querySelector('.tools');
@@ -16,12 +18,11 @@ let idCurrentSavedNote; // тут будет храниться id заметк�
 let index = 0; // при создании новой заметки - индекс будет увеличиваться. index - это data-value li элемента.
 let dataValue; // тут будет храниться значение элемента li.
 let previousDv; // старое значение dataValue. Нужна для нахождения элемента по dV.
-let activeList = document.querySelector('.active-list');
 
 
 function getRandomId() {
     return new Date().getTime();
-} // Возвращет кол-во миллисекунд прошедших с 1 января 1970 года. В моём случае используется для id заметки.
+} // Генерирует кол-во милисекунд. В моём случае используется для id заметки.
 
 function toolsFunctional(txtElement, event) {
     if (event.target.id === 'bold-block') {
@@ -171,6 +172,10 @@ function fillingOfFieldsCurrentNote() {
     }
 }
 
+function valueOfSavedNote(tag, value) {
+    document.querySelectorAll('li')[dataValue].querySelector(tag).textContent = value; // тегу 'b' или 'p' задаём значение value.
+}
+
 
 tools.addEventListener('click', function(event) {
     const mainText = document.querySelector('.main-text');
@@ -195,13 +200,13 @@ menuBtn.addEventListener('click', function() {
 })
 
 createNoteBtn.addEventListener('click', function() {
-    createNewNote();
+    createNewNote(); // Создаём заметку
 
-    noteTitle.value = '';
-    noteText.value = '';
+    noteTitle.value = ''; // Очищаем поле
+    noteText.value = ''; // Очищаем поле
 
-    switchingClassesForCreateNewNote('active-list');
-})
+    switchingClassesForCreateNewNote('active-list'); // Выделяем новую заметку (делаем темнее фон).
+}) // При нажатии на кнопку 'Создать новую заметку'
 
 savedNotes.addEventListener('click', function(event) {
     if ( event.target.closest('.notes') ) {
@@ -209,8 +214,8 @@ savedNotes.addEventListener('click', function(event) {
 
         switchingClasses('active-list'); // Выделяем серым цветом активную заметку.
 
-        fillingOfFieldsCurrentNote();
-    }
+        fillingOfFieldsCurrentNote(); //
+    } // при клике на сохр. заметку.
 
     if (event.target.className === 'trash-can') { // Если нажали на 'мусорное ведро' -->
         textConfirmation('Вы уверены, что хотите удалить эту заметку?'); // --> Указываем текст подтверждения.
@@ -220,21 +225,45 @@ savedNotes.addEventListener('click', function(event) {
         togglesDisplayStatus('flex'); // --> показываем модальное окно удаления.
 
         idCurrentSavedNote = event.target.closest('li').id; // сохраняем id удаляемого элемента.
-    }
-})
+    } // при удалении заметки.
+}) // Для сохранённых заметок.
 
 blockConfirmBtns.addEventListener('click', function(event) {
     if (event.target.id === 'del-yes') { // Если нажали на кнопку 'Да' -->
         if (blockConfirmBtns.id === 'from-trash-can') { // Если id элемента подтверждения === 'from-trash-can' -->
-            document.getElementById(idCurrentSavedNote).remove(); // --> удаляем элемент по id.
+            if (document.querySelectorAll('li').length !== 1) {
+                document.getElementById(idCurrentSavedNote).remove(); // --> удаляем элемент по id.
 
-            reWriteDataValue(); // Перезаписываем значение атрибута data-value для всех эллементов, начиная со следующего элемента.
+                index--; // После удаления заметки, index (значение атрибута data-value) уменьшаем.
 
-            index--; // После удаления заметки, index (значение атрибута data-value) уменьшаем.
+                removeNoteFromDb('from-trash-can'); // Удаляем заметку из database.
 
-            removeNoteFromDb('from-trash-can'); // Удаляем заметку из database.
+                noteTitle.value = ''
+                noteText.value = '';
 
-            idCurrentSavedNote = undefined; // очищаем переменную.
+
+                reWriteDataValue(); // Перезаписываем значение атрибута data-value для всех эллементов, начиная со следующего элемента.
+                // (удаляем 2-ой, остальные перезаписываем на -1.)
+
+                if (dbOfSavedNote[dataValue] === undefined) {
+                    dataValue--;
+                }
+
+                switchingClasses('active-list'); // Выделяем серым цветом активную заметку.
+
+                fillingOfFieldsCurrentNote();
+
+                idCurrentSavedNote = undefined; // очищаем переменную.
+            } else {
+                document.getElementById(idCurrentSavedNote).remove(); // --> удаляем элемент по id.
+
+                index--; // После удаления заметки, index (значение атрибута data-value) уменьшаем.
+
+                removeNoteFromDb('from-trash-can'); // Удаляем заметку из database.
+
+                noteTitle.value = ''
+                noteText.value = '';
+            }
         }
 
         if (blockConfirmBtns.id === 'from-clear-all-btn') { // Если id элемента подтверждения === 'from-clear-all-btn' -->
@@ -264,28 +293,31 @@ clearAllBtn.addEventListener('click', function() {
 })
 
 currentNote.addEventListener('input', function (event) {
-    if (!savedNotes.firstChild) {
+    if (!savedNotes.firstChild || document.querySelectorAll('li').length === 0) {
         createNewNote();
 
-        noteTitle.value = '';
-        noteText.value = '';
-
         switchingClassesForCreateNewNote('active-list');
-    } // переделать
+    }
 
     if (noteTitle.value !== '') {
         dbOfSavedNote[dataValue].title = noteTitle.value;
-        document.querySelectorAll('li')[dataValue].querySelector('b').textContent = noteTitle.value; // переделать
+
+        valueOfSavedNote('b', noteTitle.value);
     } else {
         dbOfSavedNote[dataValue].title = 'Без названия';
-        document.querySelectorAll('li')[dataValue].querySelector('b').textContent = 'Без названия'; // переделать
+
+        valueOfSavedNote('b', 'Без названия');
     }
 
     if (noteText.value !== '') {
         dbOfSavedNote[dataValue].text = noteText.value;
-        document.querySelectorAll('li')[dataValue].querySelector('p').textContent = noteText.value; // переделать
+
+        valueOfSavedNote('p', noteText.value);
     } else {
         dbOfSavedNote[dataValue].text = 'Пустой';
-        document.querySelectorAll('li')[dataValue].querySelector('p').textContent = 'Пустой'; // переделать
+
+        valueOfSavedNote('p', 'Пустой');
     }
 })
+
+
