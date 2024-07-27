@@ -214,7 +214,7 @@ savedNotes.addEventListener('click', function(event) {
 
         switchingClasses('active-list'); // Выделяем серым цветом активную заметку.
 
-        fillingOfFieldsCurrentNote(); //
+        fillingOfFieldsCurrentNote();
     } // при клике на сохр. заметку.
 
     if (event.target.className === 'trash-can') { // Если нажали на 'мусорное ведро' -->
@@ -269,7 +269,10 @@ blockConfirmBtns.addEventListener('click', function(event) {
         if (blockConfirmBtns.id === 'from-clear-all-btn') { // Если id элемента подтверждения === 'from-clear-all-btn' -->
             document.querySelector('ul').remove(); // --> удаляем весь тег ul. (соответсвенно все сохранённые заметки удаляются).
 
-            removeNoteFromDb('from-clear-all-btn');
+            removeNoteFromDb('from-clear-all-btn'); // очищаем массив с заметками.
+
+            noteTitle.value = ''; // очищаем заголовок заметки.
+            noteText.value = ''; // очищаем текст заметки.
 
             index = 0; // После удаления всех заметок, index (значение атрибута data-vale) обнуляем.
         }

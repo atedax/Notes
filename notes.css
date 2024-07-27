@@ -136,10 +136,10 @@ span {
 }
 
 .sidebar {
+    position: absolute;
     display: flex;
     flex-direction: column;
     height: 100%;
-    position: fixed;
     max-width: 16rem;
     border-right: 1px solid rgba(0, 0, 0, 0.1);
     border-top: none;
