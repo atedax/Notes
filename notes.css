@@ -195,7 +195,8 @@ span {
 }
 
 .block-clear-all {
-    border-top: 1px solid rgba(35, 114, 251);
+    border-top: 1px solid rgb(35, 114, 251);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     border-right: none;
     border-left: none;
 }

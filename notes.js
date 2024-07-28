@@ -36,7 +36,7 @@ function toolsFunctional(txtElement, event) {
     } else {
         txtElement.classList.toggle('line-through');
     }
-} // Отвечает за функционал инструментов. (Жирный текст, курсив и т.д.)
+} // Отвечает за функционал инструментов. (Жирный текст, курсив и т.д.)  // Не доделано!
 
 function togglesDisplayStatus(status) {
     mask.style.display = status;
